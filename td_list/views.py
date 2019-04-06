@@ -25,8 +25,12 @@ class TicketHtmlView(APIView):
 
     def post(self, request):
         data = request.data
-        tkt_obj = TicketAct().create_issue(data)
-        messages.success(request, 'The Ticket has been Created')
+        tkt_obj = None
+        if data.get('title') is '' and data.get('description') is ' ':
+            messages.warning(request, 'Please give some input')
+        else:
+            tkt_obj = TicketAct().create_issue(data)
+            messages.success(request, 'The Ticket has been Created')
         return render(request, TD_POST, {'tkt_info': tkt_obj})
 
 
