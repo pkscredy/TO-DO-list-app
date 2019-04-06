@@ -26,7 +26,9 @@ class TicketHtmlView(APIView):
     def post(self, request):
         data = request.data
         tkt_obj = None
-        if data.get('title') is '' and data.get('description') is ' ':
+        if not data.get('title').strip() and (
+                not data.get('description').strip()
+                ):
             messages.warning(request, 'Please give some input')
         else:
             tkt_obj = TicketAct().create_issue(data)
